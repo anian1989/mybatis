@@ -55,6 +55,7 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
 
   @Override
   public SqlSession openSession(boolean autoCommit) {
+    //getDefaultExecutorType() 传递的是SimpleExecutor
     return openSessionFromDataSource(configuration.getDefaultExecutorType(), null, autoCommit);
   }
 
@@ -94,6 +95,16 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
     return configuration;
   }
 
+  /**
+   * ExecutorType 是Executor的类型
+   * TransactionIsolationLevel 是事务的隔离级别
+   * autoCommit 是否开启事务
+   * @param execType
+   * @param level
+   * @param autoCommit
+   * @return
+   * openSession 的多个重载方法可以指定获得的SqlSession的Executor类型和事务的处理
+   */
   private SqlSession openSessionFromDataSource(ExecutorType execType, TransactionIsolationLevel level, boolean autoCommit) {
     Transaction tx = null;
     try {
@@ -107,7 +118,8 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
       return new DefaultSqlSession(configuration, executor, autoCommit);
     } catch (Exception e) {
       //如果打开事务出错，则关闭它
-      closeTransaction(tx); // may have fetched a connection so lets call close()
+      // may have fetched a connection so lets call close()
+      closeTransaction(tx);
       throw ExceptionFactory.wrapException("Error opening session.  Cause: " + e, e);
     } finally {
       //最后清空错误上下文

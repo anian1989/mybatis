@@ -17,15 +17,17 @@ package org.apache.ibatis.executor;
 
 /**
  * @author Clinton Begin
+ * @deprecated 错误上下文
  */
-/**
- * 
- * 错误上下文
- */
+
 public class ErrorContext {
-  // 获得 \n 不同的操作系统不一样
+  /**
+   * 获得 \n 不同的操作系统不一样
+   */
   private static final String LINE_SEPARATOR = System.getProperty("line.separator","\n");
-  //每个线程给开一个错误上下文，防止多线程问题
+  /**
+   * 每个线程给开一个错误上下文，防止多线程问题
+   */
   private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<ErrorContext>();
 
   private ErrorContext stored;
@@ -35,12 +37,17 @@ public class ErrorContext {
   private String message;
   private String sql;
   private Throwable cause;
- 
-  //单例模式
+
+  /**
+   * 单例模式
+   */
   private ErrorContext() {
   }
 
-  //工厂方法，得到一个实例
+  /**
+   * 工厂方法，得到一个实例
+   * @return
+   */
   public static ErrorContext instance() {
       //因为是多线程，所以用了ThreadLocal  线程安全
     ErrorContext context = LOCAL.get();
@@ -52,14 +59,20 @@ public class ErrorContext {
     return context;
   }
 
-  //啥意思？把ErrorContext存起来供后用？并把ThreadLocal里的东西清空了？
+  /**
+   * 啥意思？把ErrorContext存起来供后用？并把ThreadLocal里的东西清空了？
+   * @return
+   */
   public ErrorContext store() {
     stored = this;
     LOCAL.set(new ErrorContext());
     return LOCAL.get();
   }
 
-  //应该是和store相对应的方法，store是存储起来，recall是召回
+  /**
+   * 应该是和store相对应的方法，store是存储起来，recall是召回
+   * @return
+   */
   public ErrorContext recall() {
     if (stored != null) {
       LOCAL.set(stored);
@@ -68,7 +81,11 @@ public class ErrorContext {
     return LOCAL.get();
   }
 
-  //以下都是建造者模式
+  /**
+   * 以下都是建造者模式
+   * @param resource
+   * @return
+   */
   public ErrorContext resource(String resource) {
     this.resource = resource;
     return this;
@@ -99,7 +116,10 @@ public class ErrorContext {
     return this;
   }
 
-  //全部清空重置
+  /**
+   * 全部清空重置
+   * @return
+   */
   public ErrorContext reset() {
     resource = null;
     activity = null;
@@ -111,7 +131,10 @@ public class ErrorContext {
     return this;
   }
 
-  //打印信息供人阅读
+  /**
+   * 打印信息供人阅读
+   * @return
+   */
   @Override
   public String toString() {
     StringBuilder description = new StringBuilder();

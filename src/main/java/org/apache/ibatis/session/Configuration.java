@@ -180,7 +180,9 @@ public class Configuration {
   }
 
   public Configuration() {
-    //注册更多的类型别名，至于为何不直接在TypeAliasRegistry里注册，还需进一步研究
+    //注册更多的类型别名，至于为何不直接在 TypeAliasRegistry 里注册，还需进一步研究
+    //个人认为 TypeAliasRegistry 自身注册的是元数据，类似Java的基本类型的思想
+    // 此处的注册的类型是和SqlSession相关的东
     typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
     typeAliasRegistry.registerAlias("MANAGED", ManagedTransactionFactory.class);
 
