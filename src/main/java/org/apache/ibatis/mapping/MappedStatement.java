@@ -66,7 +66,9 @@ public final class MappedStatement {
     // constructor disabled
   }
 
-  //静态内部类，建造者模式
+  /**
+   * 静态内部类，建造者模式
+   */
   public static class Builder {
     private MappedStatement mappedStatement = new MappedStatement();
 

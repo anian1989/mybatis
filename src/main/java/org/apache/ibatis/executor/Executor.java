@@ -28,29 +28,63 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Clinton Begin
- */
-/**
  * 执行器
- * 
  */
+
 public interface Executor {
 
-  //不需要ResultHandler
+  /**
+   * 不需要ResultHandler
+   */
   ResultHandler NO_RESULT_HANDLER = null;
 
-  //更新
+  /**
+   * 更新
+   * @param ms
+   * @param parameter
+   * @return
+   * @throws SQLException
+   */
   int update(MappedStatement ms, Object parameter) throws SQLException;
 
-  //查询，带分页，带缓存，BoundSql
+  /**
+   * 查询，带分页，带缓存，BoundSql
+   * @param ms
+   * @param parameter
+   * @param rowBounds
+   * @param resultHandler
+   * @param cacheKey
+   * @param boundSql
+   * @param <E>
+   * @return
+   * @throws SQLException
+   */
   <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws SQLException;
 
-  //查询，带分页
+  /**
+   * 查询，带分页
+   * @param ms
+   * @param parameter
+   * @param rowBounds
+   * @param resultHandler
+   * @param <E>
+   * @return
+   * @throws SQLException
+   */
   <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
 
-  //刷新批处理语句
+  /**
+   * 刷新批处理语句
+   * @return
+   * @throws SQLException
+   */
   List<BatchResult> flushStatements() throws SQLException;
 
-  //提交和回滚，参数是是否要强制
+  /**
+   * 提交和回滚，参数是是否要强制
+   * @param required
+   * @throws SQLException
+   */
   void commit(boolean required) throws SQLException;
 
   void rollback(boolean required) throws SQLException;
